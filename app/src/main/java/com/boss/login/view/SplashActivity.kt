@@ -1,10 +1,12 @@
-package com.boss.login
+package com.boss.login.view
 
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import com.boss.login.R
+import com.boss.login.utils.PrefConstant
 
 class SplashActivity : AppCompatActivity() {
     // var sharedPreferences: SharedPreferences? = null

@@ -1,10 +1,11 @@
-package com.boss.login
+package com.boss.login.view
 
 import android.os.Bundle
 import android.util.Log
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import com.boss.login.model.Note
+import com.boss.login.R
+import com.boss.login.utils.AppConstant
 
 class DetailActivity : AppCompatActivity() {
     lateinit var textViewTitle: TextView

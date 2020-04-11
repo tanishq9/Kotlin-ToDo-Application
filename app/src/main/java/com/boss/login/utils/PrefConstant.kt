@@ -1,4 +1,4 @@
-package com.boss.login
+package com.boss.login.utils
 
 object PrefConstant {
     // Mention all shared preference map names and key names

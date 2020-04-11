@@ -1,4 +1,4 @@
-package com.boss.login
+package com.boss.login.view
 
 import android.content.Context
 import android.content.Intent
@@ -10,6 +10,9 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.boss.login.R
+import com.boss.login.utils.AppConstant
+import com.boss.login.utils.PrefConstant
 
 class LoginActivity : AppCompatActivity() {
     lateinit var editTextFullName: EditText

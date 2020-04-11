@@ -1,4 +1,4 @@
-package com.boss.login
+package com.boss.login.utils
 
 object AppConstant {
     // Mention all constants used in the app

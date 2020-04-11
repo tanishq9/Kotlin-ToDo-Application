@@ -1,4 +1,4 @@
-package com.boss.login
+package com.boss.login.view
 
 import android.content.Context
 import android.content.DialogInterface
@@ -14,9 +14,12 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.boss.login.R
 import com.boss.login.adapter.NotesAdapter
 import com.boss.login.clickListeners.ItemClickListener
 import com.boss.login.model.Note
+import com.boss.login.utils.AppConstant
+import com.boss.login.utils.PrefConstant
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 
