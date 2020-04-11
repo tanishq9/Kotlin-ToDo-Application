@@ -3,13 +3,15 @@ package com.boss.login.adapter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.CheckBox
+import android.widget.CompoundButton
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.boss.login.R
 import com.boss.login.clickListeners.ItemClickListener
-import com.boss.login.model.Note
+import com.boss.login.db.Notes
 
-class NotesAdapter(val list: ArrayList<Note>, val itemClickListener: ItemClickListener) : RecyclerView.Adapter<NotesAdapter.NoteHolder>() {
+class NotesAdapter(val list: ArrayList<Notes>, val itemClickListener: ItemClickListener) : RecyclerView.Adapter<NotesAdapter.NoteHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NotesAdapter.NoteHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.notes_adapter_layout, parent, false)
         return NoteHolder(view)
@@ -20,7 +22,7 @@ class NotesAdapter(val list: ArrayList<Note>, val itemClickListener: ItemClickLi
     }
 
     override fun onBindViewHolder(holder: NotesAdapter.NoteHolder, position: Int) {
-        val note: Note = list[position]
+        val note: Notes = list[position]
         val title = note.title
         val description = note.description
         holder.textViewTitle.text = title
@@ -30,11 +32,17 @@ class NotesAdapter(val list: ArrayList<Note>, val itemClickListener: ItemClickLi
                 itemClickListener.onClick(note)
             }
         })
+        holder.checkBoxMarkStatus.setOnCheckedChangeListener(object : CompoundButton.OnCheckedChangeListener {
+            override fun onCheckedChanged(p0: CompoundButton?, p1: Boolean) {
+                itemClickListener.onUpdate(note)
+            }
+        })
     }
 
     inner class NoteHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val textViewTitle: TextView = itemView.findViewById<TextView>(R.id.textViewTitle)
         val textViewDescription: TextView = itemView.findViewById<TextView>(R.id.textViewDescription)
+        val checkBoxMarkStatus: CheckBox = itemView.findViewById<CheckBox>(R.id.checkboxMarkStatus)
     }
 
 }

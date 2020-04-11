@@ -14,10 +14,11 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.boss.login.NotesApp
 import com.boss.login.R
 import com.boss.login.adapter.NotesAdapter
 import com.boss.login.clickListeners.ItemClickListener
-import com.boss.login.model.Note
+import com.boss.login.db.Notes
 import com.boss.login.utils.AppConstant
 import com.boss.login.utils.PrefConstant
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -29,7 +30,7 @@ class MyNotesActivity : AppCompatActivity() {
     lateinit var sharedPreferences: SharedPreferences
     lateinit var floatingActionButton: FloatingActionButton
     lateinit var recyclerView: RecyclerView
-    lateinit var arrayList: ArrayList<Note>
+    lateinit var arrayList: ArrayList<Notes>
     lateinit var linearLayoutManager: LinearLayoutManager
     lateinit var notesAdapter: NotesAdapter
     lateinit var itemClickLister: ItemClickListener
@@ -42,12 +43,27 @@ class MyNotesActivity : AppCompatActivity() {
         bindView()
         setUpSharedPreference()
         getIntentData()
+
+        getDataFromDatabase()
+
         floatingActionButton.setOnClickListener(object : View.OnClickListener {
             override fun onClick(p0: View?) {
                 setUpDialogBox()
             }
         })
         supportActionBar?.title = fullName
+    }
+
+    private fun getDataFromDatabase() {
+        val notesApp = applicationContext as NotesApp
+        val notesDao = notesApp.getNotesDB().notesDao()
+        val listOfNotes = notesDao.getAll()
+        // init the arrayList
+        arrayList.addAll(listOfNotes)
+        Log.e(tag, arrayList.size.toString())
+        // setup the adapter of recycler view
+        notesAdapter = NotesAdapter(arrayList, itemClickLister)
+        recyclerView.adapter = notesAdapter
     }
 
     private fun setUpDialogBox() {
@@ -59,11 +75,14 @@ class MyNotesActivity : AppCompatActivity() {
                 .setCancelable(false)
                 .setPositiveButton("Add", object : DialogInterface.OnClickListener {
                     override fun onClick(p0: DialogInterface?, p1: Int) {
-                        val title = editTextTitle.text.toString()
-                        val description = editTextDescription.text.toString()
-                        if (title.isNotEmpty() && description.isNotEmpty()) {
+                        val titleText = editTextTitle.text.toString()
+                        val descriptionText = editTextDescription.text.toString()
+                        if (titleText.isNotEmpty() && descriptionText.isNotEmpty()) {
                             // create a new note
-                            arrayList.add(Note(title, description))
+                            val note = Notes(title = titleText, description = descriptionText)
+                            // add this new note to database
+                            addNote(note)
+                            // arrayList.add(Note(title, description))
                             // update the UI by modifying the adapter
                             updateUI()
                         } else {
@@ -82,8 +101,21 @@ class MyNotesActivity : AppCompatActivity() {
         alertDialog.show()
     }
 
-    private fun updateUI() {
+    private fun addNote(note: Notes) {
+        // insertion of notes in db and update the recycler view
+        val notesApp = applicationContext as NotesApp
+        val notesDao = notesApp.getNotesDB().notesDao()
+        notesDao.insert(note)
+        // reset the arrayList
+        arrayList.clear()
+        arrayList.addAll(notesDao.getAll())
+        Log.e(tag, arrayList.size.toString())
+        // setup the adapter of recycler view again
         recyclerView.adapter = notesAdapter
+    }
+
+    private fun updateUI() {
+
     }
 
     private fun getIntentData() {
@@ -105,15 +137,23 @@ class MyNotesActivity : AppCompatActivity() {
         linearLayoutManager = LinearLayoutManager(this@MyNotesActivity, LinearLayoutManager.VERTICAL, false)
         recyclerView.layoutManager = linearLayoutManager
         itemClickLister = object : ItemClickListener {
-            override fun onClick(note: Note) {
+            override fun onClick(note: Notes) {
                 val intent = Intent(this@MyNotesActivity, DetailActivity::class.java)
                 intent.putExtra(AppConstant.TITLE, note.title)
                 intent.putExtra(AppConstant.DESCRIPTION, note.description)
                 startActivity(intent)
             }
+
+            override fun onUpdate(note: Notes) {
+
+            }
         }
-        arrayList = ArrayList<Note>()
-        notesAdapter = NotesAdapter(arrayList, itemClickLister)
+        arrayList = ArrayList<Notes>()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        Log.e(tag, "onDestroy called")
     }
 
 }

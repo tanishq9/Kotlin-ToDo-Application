@@ -23,7 +23,7 @@ class LoginActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         Log.e(tag, "onCreate Called")
-        setContentView(R.layout.activity_detail)
+        setContentView(R.layout.activity_login)
         bindView()
         setUpSharedPreferences()
 
