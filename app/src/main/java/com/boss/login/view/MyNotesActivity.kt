@@ -19,6 +19,7 @@ import com.boss.login.R
 import com.boss.login.adapter.NotesAdapter
 import com.boss.login.clickListeners.ItemClickListener
 import com.boss.login.db.Notes
+import com.boss.login.db.NotesDatabase
 import com.boss.login.utils.AppConstant
 import com.boss.login.utils.PrefConstant
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -58,12 +59,9 @@ class MyNotesActivity : AppCompatActivity() {
         val notesApp = applicationContext as NotesApp
         val notesDao = notesApp.getNotesDB().notesDao()
         val listOfNotes = notesDao.getAll()
-        // init the arrayList
+        // update the arrayList with all notes
         arrayList.addAll(listOfNotes)
         Log.e(tag, arrayList.size.toString())
-        // setup the adapter of recycler view
-        notesAdapter = NotesAdapter(arrayList, itemClickLister)
-        recyclerView.adapter = notesAdapter
     }
 
     private fun setUpDialogBox() {
@@ -80,11 +78,10 @@ class MyNotesActivity : AppCompatActivity() {
                         if (titleText.isNotEmpty() && descriptionText.isNotEmpty()) {
                             // create a new note
                             val note = Notes(title = titleText, description = descriptionText)
-                            // add this new note to database
+                            // add this new note to arrayList
                             arrayList.add(note)
+                            // add this new note to database
                             addNote(note)
-                            // update the UI by modifying the adapter
-                            updateUI()
                         } else {
                             Toast.makeText(this@MyNotesActivity, "Enter both title and description", Toast.LENGTH_SHORT).show()
                         }
@@ -102,23 +99,10 @@ class MyNotesActivity : AppCompatActivity() {
     }
 
     private fun addNote(note: Notes) {
-        // insertion of notes in db and update the recycler view
+        // insertion of notes in db
         val notesApp = applicationContext as NotesApp
         val notesDao = notesApp.getNotesDB().notesDao()
         notesDao.insert(note)
-        // no need to execute the below code because we have already updated the list
-        // and insert refreshes the adapter
-
-        // reset the arrayList
-        // arrayList.clear()
-        // arrayList.addAll(notesDao.getAll())
-        // Log.e(tag, arrayList.size.toString())
-        // setup the adapter of recycler view again
-        // recyclerView.adapter = notesAdapter
-    }
-
-    private fun updateUI() {
-
     }
 
     private fun getIntentData() {
@@ -148,10 +132,16 @@ class MyNotesActivity : AppCompatActivity() {
             }
 
             override fun onUpdate(note: Notes) {
-
+                Log.e(tag, note.isTaskCompleted.toString())
+                val notesApp = applicationContext as NotesApp
+                val notesDao = notesApp.getNotesDB().notesDao()
+                notesDao.update(note)
             }
         }
         arrayList = ArrayList<Notes>()
+        // setup the adapter with the arrayList
+        notesAdapter = NotesAdapter(arrayList, itemClickLister)
+        recyclerView.adapter = notesAdapter
     }
 
     override fun onDestroy() {

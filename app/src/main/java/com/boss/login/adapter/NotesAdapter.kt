@@ -1,5 +1,6 @@
 package com.boss.login.adapter
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,6 +13,9 @@ import com.boss.login.clickListeners.ItemClickListener
 import com.boss.login.db.Notes
 
 class NotesAdapter(val list: ArrayList<Notes>, val itemClickListener: ItemClickListener) : RecyclerView.Adapter<NotesAdapter.NoteHolder>() {
+
+    val tag: String = "NotesAdapter::"
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NotesAdapter.NoteHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.notes_adapter_layout, parent, false)
         return NoteHolder(view)
@@ -25,8 +29,10 @@ class NotesAdapter(val list: ArrayList<Notes>, val itemClickListener: ItemClickL
         val note: Notes = list[position]
         val title = note.title
         val description = note.description
+        val isChecked = note.isTaskCompleted
         holder.textViewTitle.text = title
         holder.textViewDescription.text = description
+        holder.checkBoxMarkStatus.isChecked = isChecked
         holder.itemView.setOnClickListener(object : View.OnClickListener {
             override fun onClick(p0: View?) {
                 itemClickListener.onClick(note)
@@ -34,7 +40,9 @@ class NotesAdapter(val list: ArrayList<Notes>, val itemClickListener: ItemClickL
         })
         holder.checkBoxMarkStatus.setOnCheckedChangeListener(object : CompoundButton.OnCheckedChangeListener {
             override fun onCheckedChanged(p0: CompoundButton?, p1: Boolean) {
+                // p1 tells us if the check button was checked or not
                 note.isTaskCompleted = p1
+                Log.e(tag, note.isTaskCompleted.toString())
                 itemClickListener.onUpdate(note)
             }
         })
