@@ -81,8 +81,8 @@ class MyNotesActivity : AppCompatActivity() {
                             // create a new note
                             val note = Notes(title = titleText, description = descriptionText)
                             // add this new note to database
+                            arrayList.add(note)
                             addNote(note)
-                            // arrayList.add(Note(title, description))
                             // update the UI by modifying the adapter
                             updateUI()
                         } else {
@@ -106,12 +106,15 @@ class MyNotesActivity : AppCompatActivity() {
         val notesApp = applicationContext as NotesApp
         val notesDao = notesApp.getNotesDB().notesDao()
         notesDao.insert(note)
+        // no need to execute the below code because we have already updated the list
+        // and insert refreshes the adapter
+
         // reset the arrayList
-        arrayList.clear()
-        arrayList.addAll(notesDao.getAll())
-        Log.e(tag, arrayList.size.toString())
+        // arrayList.clear()
+        // arrayList.addAll(notesDao.getAll())
+        // Log.e(tag, arrayList.size.toString())
         // setup the adapter of recycler view again
-        recyclerView.adapter = notesAdapter
+        // recyclerView.adapter = notesAdapter
     }
 
     private fun updateUI() {

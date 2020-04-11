@@ -34,6 +34,7 @@ class NotesAdapter(val list: ArrayList<Notes>, val itemClickListener: ItemClickL
         })
         holder.checkBoxMarkStatus.setOnCheckedChangeListener(object : CompoundButton.OnCheckedChangeListener {
             override fun onCheckedChanged(p0: CompoundButton?, p1: Boolean) {
+                note.isTaskCompleted = p1
                 itemClickListener.onUpdate(note)
             }
         })
