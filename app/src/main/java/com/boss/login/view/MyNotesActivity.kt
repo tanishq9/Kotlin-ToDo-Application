@@ -35,7 +35,8 @@ class MyNotesActivity : AppCompatActivity() {
     lateinit var linearLayoutManager: LinearLayoutManager
     lateinit var notesAdapter: NotesAdapter
     lateinit var itemClickLister: ItemClickListener
-    var tag: String = "Activity::Notes"
+    val tag: String = "Activity::Notes"
+    val ADD_NOTES_CODE = 100
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -49,7 +50,14 @@ class MyNotesActivity : AppCompatActivity() {
 
         floatingActionButton.setOnClickListener(object : View.OnClickListener {
             override fun onClick(p0: View?) {
-                setUpDialogBox()
+                Log.e(tag, "FAB clicked")
+                val intent = Intent(this@MyNotesActivity, AddNotesActivity::class.java)
+                startActivityForResult(intent, ADD_NOTES_CODE)
+                // setUpDialogBox()
+                /*val intent = Intent(this@MyNotesActivity, AddNotesActivity::class.java)
+                startActivity(intent)*
+                We will use startActivityForResult since, we will use the info from the activity called
+                 */
             }
         })
         supportActionBar?.title = fullName
