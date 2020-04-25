@@ -5,6 +5,7 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Environment
 import android.provider.MediaStore
 import android.util.Log
 import android.view.LayoutInflater
@@ -16,8 +17,13 @@ import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.core.content.FileProvider
+import com.boss.login.BuildConfig
 import com.boss.login.R
 import com.bumptech.glide.Glide
+import java.io.File
+import java.sql.Date
+import java.text.SimpleDateFormat
 import java.util.jar.Manifest
 
 class AddNotesActivity : AppCompatActivity() {
@@ -94,7 +100,25 @@ class AddNotesActivity : AppCompatActivity() {
         // add click listeners for both the text views in the dialog
         textViewCamera.setOnClickListener(object : View.OnClickListener {
             override fun onClick(p0: View?) {
-
+                val takePictureIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+                var photoFile: File? = null
+                // create a file
+                photoFile = createImage()
+                if (photoFile != null) {
+                    // we are getting the local file path using file provider using the given content provider authority
+                    val photoURI = FileProvider.getUriForFile(this@AddNotesActivity, BuildConfig.APPLICATION_ID + ".provider", photoFile)
+                    // we will add file provider (content provider) in the manifest file
+                    //  A Content Provider is used to share and access data from a central repository.
+                    //  Usually android applications keep data hidden from the other applications but sometimes,
+                    //  it is useful to share data across them.
+                    // that is what we have to mention in the manifest file as well otherwise app crashes
+                    picturePath = photoFile.absolutePath
+                    Log.e(TAG, picturePath)
+                    takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
+                    Log.e(TAG, "set imageView in onActivityResult()")
+                    startActivityForResult(takePictureIntent, REQUEST_CODE_CAMERA)
+                    dialog.dismiss()
+                }
             }
         })
 
@@ -114,6 +138,13 @@ class AddNotesActivity : AppCompatActivity() {
         })
 
         dialog.show()
+    }
+
+    private fun createImage(): File? {
+        val timestamp = SimpleDateFormat("yyyyMMddHHmmss").format(java.util.Date())
+        val fileName = "JPEG_" + timestamp + "_"
+        val storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES)
+        return File.createTempFile(fileName, ".jpg", storageDir)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -143,7 +174,7 @@ class AddNotesActivity : AppCompatActivity() {
                 }
 
                 REQUEST_CODE_CAMERA -> {
-
+                    Glide.with(this).load(picturePath).into(imageView)
                 }
             }
         }
