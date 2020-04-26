@@ -15,6 +15,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.work.*
 import com.boss.login.NotesApp
 import com.boss.login.R
 import com.boss.login.adapter.NotesAdapter
@@ -23,7 +24,9 @@ import com.boss.login.db.Notes
 import com.boss.login.db.NotesDatabase
 import com.boss.login.utils.AppConstant
 import com.boss.login.utils.PrefConstant
+import com.boss.login.workmanager.MyWorker
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import java.util.concurrent.TimeUnit
 
 
 class MyNotesActivity : AppCompatActivity() {
@@ -46,8 +49,8 @@ class MyNotesActivity : AppCompatActivity() {
         bindView()
         setUpSharedPreference()
         getIntentData()
-
         getDataFromDatabase()
+        setUpWorkManager()
 
         floatingActionButton.setOnClickListener(object : View.OnClickListener {
             override fun onClick(p0: View?) {
@@ -62,6 +65,24 @@ class MyNotesActivity : AppCompatActivity() {
             }
         })
         supportActionBar?.title = fullName
+    }
+
+    private fun setUpWorkManager() {
+        val constraint = Constraints.Builder()
+//                .setRequiresBatteryNotLow(true)
+//                .setRequiresCharging(false)
+//                .setRequiredNetworkType(NetworkType.CONNECTED)
+                .build()
+
+        // minimum time limit for a periodic task in 15 minutes, so even if we
+        // pass 1 minutes, it will default it to 15 minutes (i.e 90000sec)
+        // therefore we can't have duration of periodic task to be less than 15 minutes
+        val request = PeriodicWorkRequest
+                .Builder(MyWorker::class.java, 1, TimeUnit.MINUTES)
+                .setConstraints(constraint)
+                .build()
+
+        WorkManager.getInstance().enqueue(request)
     }
 
     private fun getDataFromDatabase() {
