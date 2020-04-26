@@ -20,6 +20,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import com.boss.login.BuildConfig
 import com.boss.login.R
+import com.boss.login.utils.AppConstant
 import com.bumptech.glide.Glide
 import java.io.File
 import java.sql.Date
@@ -56,6 +57,20 @@ class AddNotesActivity : AppCompatActivity() {
                 }
             }
         })
+
+        buttonSubmit.setOnClickListener(object : View.OnClickListener {
+            override fun onClick(p0: View?) {
+                // pass the data from this activity to MyNotesActivity, since we are passing this activity using onActivityResult
+                val intent = Intent()
+                intent.putExtra(AppConstant.TITLE, editTextTile.text.toString())
+                intent.putExtra(AppConstant.DESCRIPTION, editTextDescription.text.toString())
+                intent.putExtra(AppConstant.IMAGE_PATH, picturePath)
+                setResult(Activity.RESULT_OK, intent)
+                finish()
+            }
+
+        })
+
     }
 
     private fun checkAndRequestPermission(): Boolean {

@@ -1,5 +1,6 @@
 package com.boss.login.view
 
+import android.app.Activity
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
@@ -155,6 +156,20 @@ class MyNotesActivity : AppCompatActivity() {
     override fun onDestroy() {
         super.onDestroy()
         Log.e(tag, "onDestroy called")
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == ADD_NOTES_CODE) {
+            val title = data?.getStringExtra(AppConstant.TITLE)
+            val description = data?.getStringExtra(AppConstant.DESCRIPTION)
+            val imagePath = data?.getStringExtra(AppConstant.IMAGE_PATH)
+
+            val notes = Notes(title = title!!, description = description!!, imagePath = imagePath!!, isTaskCompleted = false)
+            arrayList.add(notes)
+            recyclerView.adapter?.notifyItemChanged(arrayList.size - 1)
+            addNote(notes);
+        }
     }
 
 }
