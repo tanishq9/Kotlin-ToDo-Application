@@ -40,4 +40,5 @@ dependencies {
     kapt 'com.github.bumptech.glide:compiler:4.11.0'
     implementation 'androidx.work:work-runtime:2.0.1'
     implementation 'com.amitshekhar.android:jackson-android-networking:1.0.2'
+    implementation 'androidx.viewpager:viewpager:1.0.0'
 }
