@@ -1,6 +1,7 @@
 package com.boss.login
 
 import android.app.Application
+import com.androidnetworking.AndroidNetworking
 import com.boss.login.db.NotesDatabase
 
 class NotesApp : Application() {
@@ -9,6 +10,7 @@ class NotesApp : Application() {
 
     override fun onCreate() {
         super.onCreate()
+        AndroidNetworking.initialize(applicationContext)
     }
 
     fun getNotesDB(): NotesDatabase {
