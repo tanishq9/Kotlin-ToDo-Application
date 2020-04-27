@@ -1,5 +1,6 @@
 package com.boss.login.onboarding
 
+import android.content.Context
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -12,7 +13,13 @@ import kotlinx.android.synthetic.main.activity_login.*
 
 class OnBoardingTwoFragment : Fragment() {
     lateinit var textViewBack: TextView
-    lateinit var textViewNext: TextView
+    lateinit var textViewDone: TextView
+    lateinit var onOptionClick: OnOptionClick
+
+    override fun onAttach(context: Context?) {
+        super.onAttach(context)
+        onOptionClick = context as OnOptionClick
+    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -27,7 +34,26 @@ class OnBoardingTwoFragment : Fragment() {
 
     private fun bindViews(view: View) {
         textViewBack = view.findViewById(R.id.textViewBack)
-        textViewNext = view.findViewById(R.id.textViewNext)
+        textViewDone = view.findViewById(R.id.textViewDone)
+        clickListeners()
+    }
+
+    private fun clickListeners() {
+        textViewBack.setOnClickListener(object : View.OnClickListener {
+            override fun onClick(p0: View?) {
+                onOptionClick.onOptionBack()
+            }
+        })
+        textViewDone.setOnClickListener(object : View.OnClickListener {
+            override fun onClick(p0: View?) {
+                onOptionClick.onOptionDone()
+            }
+        })
+    }
+
+    interface OnOptionClick {
+        fun onOptionBack()
+        fun onOptionDone()
     }
 
 }

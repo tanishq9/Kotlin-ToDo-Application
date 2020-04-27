@@ -30,10 +30,10 @@
 
 
     <TextView
-        android:id="@+id/textViewNext"
+        android:id="@+id/textViewDone"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Next"
+        android:text="Done"
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
