@@ -4,19 +4,43 @@ import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
+import android.util.Log
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.boss.login.R
 import com.boss.login.utils.PrefConstant
+import com.google.android.gms.tasks.OnCompleteListener
+import com.google.firebase.iid.FirebaseInstanceId
 
 class SplashActivity : AppCompatActivity() {
     // var sharedPreferences: SharedPreferences? = null
     lateinit var sharedPreferences: SharedPreferences
+    val TAG: String = "SplashActivity"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash)
         setUpSharedPreferences()
         checkLoginStatus()
+        getFCMToken()
+    }
+
+    private fun getFCMToken() {
+        FirebaseInstanceId.getInstance().instanceId
+                .addOnCompleteListener(OnCompleteListener { task ->
+                    if (!task.isSuccessful) {
+                        Log.w(TAG, "getInstanceId failed", task.exception)
+                        return@OnCompleteListener
+                    }
+
+                    // Get new Instance ID token
+                    val token = task.result?.token
+
+                    // Log and toast
+                    Log.d(TAG, token)
+                    Toast.makeText(baseContext, token, Toast.LENGTH_SHORT).show()
+                })
+
     }
 
     private fun setUpSharedPreferences() {
