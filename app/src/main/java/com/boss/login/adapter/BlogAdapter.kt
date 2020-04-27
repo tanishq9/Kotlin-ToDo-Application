@@ -13,8 +13,8 @@ import com.bumptech.glide.Glide
 
 class BlogAdapter(val list: ArrayList<Data>) : RecyclerView.Adapter<BlogAdapter.BlogHolder>() {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BlogHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.blog_layout, null)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BlogAdapter.BlogHolder {
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.blog_layout, parent, false)
         return BlogHolder(view)
     }
 
@@ -24,7 +24,7 @@ class BlogAdapter(val list: ArrayList<Data>) : RecyclerView.Adapter<BlogAdapter.
 
     override fun onBindViewHolder(holder: BlogHolder, position: Int) {
         val blog = list.get(position)
-        Glide.with(holder.imageView).load(blog.blog_url).into(holder.imageView)
+        Glide.with(holder.itemView).load(blog.blog_url).into(holder.imageView)
         holder.textViewTitle.text = blog.title
         holder.textViewDescription.text = blog.description
     }
