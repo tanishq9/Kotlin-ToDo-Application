@@ -3,9 +3,10 @@ package com.boss.login.onboarding
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
+import androidx.fragment.app.FragmentStatePagerAdapter
 
 // Fragment Manager is used to manage actions of fragments
-class FragmentAdapter(fragmentManager: FragmentManager) : FragmentPagerAdapter(fragmentManager) {
+class FragmentAdapter(fragmentManager: FragmentManager) : FragmentStatePagerAdapter(fragmentManager) {
     // add ? after the return type 'Fragment' of the below function
     // it will mean that this function can return null values as well
     override fun getItem(position: Int): Fragment? {
