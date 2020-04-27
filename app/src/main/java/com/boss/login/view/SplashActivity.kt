@@ -37,7 +37,7 @@ class SplashActivity : AppCompatActivity() {
                     val token = task.result?.token
 
                     // Log and toast
-                    Log.d(TAG, token)
+                    // Log.d(TAG, token)
                     Toast.makeText(baseContext, token, Toast.LENGTH_SHORT).show()
                 })
 
