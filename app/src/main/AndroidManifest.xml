@@ -36,19 +36,28 @@
 
         <activity
             android:name=".onboarding.OnBoardingActivity"
-            android:theme="@style/NoToolbar"></activity>
-
+            android:theme="@style/NoToolbar" />
         <activity android:name=".view.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".view.LoginActivity" />
-        <activity android:name=".view.MyNotesActivity" />
-        <activity android:name=".view.DetailActivity" />
-        <activity android:name=".view.AddNotesActivity" />
-        <activity android:name=".view.BlogActivity" />
+        <activity
+            android:name=".view.LoginActivity"
+            android:theme="@style/OtherTheme" />
+        <activity
+            android:name=".view.MyNotesActivity"
+            android:theme="@style/OtherTheme" />
+        <activity
+            android:name=".view.DetailActivity"
+            android:theme="@style/OtherTheme" />
+        <activity
+            android:name=".view.AddNotesActivity"
+            android:theme="@style/OtherTheme" />
+        <activity
+            android:name=".view.BlogActivity"
+            android:theme="@style/OtherTheme" />
     </application>
 
 </manifest>
