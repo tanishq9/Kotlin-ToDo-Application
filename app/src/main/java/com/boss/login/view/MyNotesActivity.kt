@@ -203,6 +203,7 @@ class MyNotesActivity : AppCompatActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId == R.id.blog) {
+            startActivity(Intent(this, BlogActivity::class.java))
             Log.e(tag, "Blog menu option clicked");
         }
         return super.onOptionsItemSelected(item);
