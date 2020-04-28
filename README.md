@@ -55,3 +55,5 @@
 <p align="center">
   <img src="https://user-images.githubusercontent.com/35667308/80431018-f23ebf00-890d-11ea-8861-937974fd86ec.png"></img>
 </p> 
+<br>
+<h1><a href="https://drive.google.com/open?id=1UaLyjMzLJ4Q5-0o-JT4fZfqLeBj_QBgf"> Download APK </a></h1>
